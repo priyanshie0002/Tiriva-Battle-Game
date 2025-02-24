@@ -1,0 +1,55 @@
+#container {
+	display: grid;
+}
+
+#header {
+	text-align: center;
+}
+
+#playersNameInputDiv {
+	border-top: 2px solid lightgray;
+	border-bottom: 2px solid lightgray;
+	align-content: center;
+	text-align: center;
+	visibility: visible;
+	height: 100px;
+	padding: 10px;
+}
+
+#categoriesSelectionDiv {
+	border-top: 2px solid lightgray;
+	border-bottom: 2px solid lightgray;
+	align-content: center;
+	text-align: center;
+	padding: 10px;
+	height: 100px;
+	visibility: collapse;
+}
+
+#battleQuestionDiv {
+	border-top: 2px solid lightgray;
+	border-bottom: 2px solid lightgray;
+	text-align: center;
+	align-content: center;
+	padding: 10px;
+	height: 150px;
+	visibility: collapse;
+}
+
+#scoreBoard {
+	border-top: 2px solid lightgray;
+	border-bottom: 2px solid lightgray;
+	align-content: center;
+	text-align: center;
+	padding: 10px;
+	height: 100px;
+	visibility: collapse;
+}
+
+#gameEndButton {
+	visibility: collapse;
+}
+
+#gameOverHeader {
+	visibility: collapse;
+}
