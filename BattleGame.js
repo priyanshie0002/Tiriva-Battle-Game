@@ -144,6 +144,7 @@ function checkAnswer(button) {
 
 function endGame() {
 	document.getElementById("categoriesSelectionDiv").style.visibility = "collapse";
+	document.getElementById("gameEndButton").style.visibility = "collapse";
 	document.getElementById("declairPlayeWin").style.visibility = "visible";
 	document.getElementById("gameOverHeader").style.visibility = "visible";
 	let text;
