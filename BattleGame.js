@@ -3,7 +3,7 @@ let player1 = "";
 let player2 = "";
 let oldSelectedCategories = [];
 let questions = [];
-let currentPlayerTurn;
+let currentPlayerTurn = 2;
 let currentQuestionTurn = -1;
 let player1Score = 0;
 let player2Score = 0;
@@ -41,6 +41,10 @@ async function fetchQuestionByCategories() {
 	document.getElementById("battleQuestionDiv").style.visibility = "visible";
 	document.getElementById("categoriesSelectionDiv").style.visibility = "collapse";
 	document.getElementById("gameEndButton").style.visibility = "collapse";
+	document.getElementById("player1Score").textContent = `${player1} Score: ${player1Score}`
+	document.getElementById("player2Score").textContent = `${player2} Score: ${player2Score}`
+	document.getElementById("scoreBoard").style.visibility = "visible"
+
 }
 
 function nextTurn() {
@@ -65,6 +69,7 @@ function nextTurn() {
 		document.getElementById("categoriesSelectionDiv").style.visibility = "visible";
 		document.getElementById("gameEndButton").style.visibility = "visible";
 		currentQuestionTurn = 0;
+		currentPlayerTurn = 2;
 		questions = [];
 		return;
 	}
@@ -135,7 +140,6 @@ function checkAnswer(button) {
 	console.log(score);
 	document.getElementById("player1Score").textContent = `${player1} Score: ${player1Score}`
 	document.getElementById("player2Score").textContent = `${player2} Score: ${player2Score}`
-	document.getElementById("scoreBoard").style.visibility = "visible"
 }
 
 function endGame() {
