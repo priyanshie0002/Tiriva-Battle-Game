@@ -4,10 +4,10 @@ let player2 = "";
 let oldSelectedCategories = [];
 let questions = [];
 let currentPlayerTurn;
-let currentQuestionTurn = 0;
-let nextButtonClickCount = 0;
+let currentQuestionTurn = -1;
 let player1Score = 0;
 let player2Score = 0;
+let questionAnserTurn = 0;
 
 async function fetchQuestionByCategories() {
 	let category = document.getElementById("categoryList").value;
@@ -18,30 +18,34 @@ async function fetchQuestionByCategories() {
 		oldSelectedCategories.push(category);
 	}
 
-	let jsonResponse = await fetch(`https://the-trivia-api.com/v2/questions?categories=${category}`);
-	questions = await jsonResponse.json();
-	currentPlayerTurn = 1;
+	let easyQuestionResponse = await fetch(`https://the-trivia-api.com/v2/questions?categories=${category}&limit=2&difficulties=easy`);
+	let mediumQuestionResponse = await fetch(`https://the-trivia-api.com/v2/questions?categories=${category}&limit=2&difficulties=medium`);
+	let hardQuestionResponse = await fetch(`https://the-trivia-api.com/v2/questions?categories=${category}&limit=2&difficulties=hard`);
+	let easyQuestions = await easyQuestionResponse.json();
+	let mediumQuestions = await mediumQuestionResponse.json();
+	let hardQuestions = await hardQuestionResponse.json();
+	easyQuestions.forEach(element => {
+		questions.push(element);
+	});
+
+	mediumQuestions.forEach(element => {
+		questions.push(element);
+	})
+
+	hardQuestions.forEach(element => {
+		questions.push(element);
+	})
+
 	console.log(questions);
-	let firstQuestion = questions[currentQuestionTurn];
-	console.log(firstQuestion);
-	document.getElementById("currentPlayer").textContent = `${player1} turn for quiz`
-	document.getElementById("battleQuestion").textContent = firstQuestion.question.text
-	document.getElementById("option1").textContent = firstQuestion.correctAnswer
-	for (let i = 1; i <= firstQuestion.incorrectAnswers.length; i++) {
-		let option = `option${i + 1}`
-		document.getElementById(option).textContent = firstQuestion.incorrectAnswers[i - 1]
-	}
+	nextTurn();
 	document.getElementById("battleQuestionDiv").style.visibility = "visible";
 	document.getElementById("categoriesSelectionDiv").style.visibility = "collapse";
+	document.getElementById("gameEndButton").style.visibility = "collapse";
 }
 
 function nextTurn() {
-	nextButtonClickCount++;
-	console.log(nextButtonClickCount);
-	if (nextButtonClickCount % 2 === 0) {
-		currentQuestionTurn++;
-	}
-
+	questionAnserTurn = 0;
+	currentQuestionTurn++;
 	if (currentPlayerTurn === 1) {
 		currentPlayerTurn = 2;
 	} else {
@@ -54,25 +58,34 @@ function nextTurn() {
 	} else {
 		playerTurn = player2
 	}
+
 	if (currentQuestionTurn >= questions.length) {
 		alert("Round Over! Select another category or end game.");
 		document.getElementById("battleQuestionDiv").style.visibility = "collapse";
 		document.getElementById("categoriesSelectionDiv").style.visibility = "visible";
 		document.getElementById("gameEndButton").style.visibility = "visible";
-		nextButtonClickCount = 0;
+		currentQuestionTurn = 0;
+		questions = [];
 		return;
 	}
+
 	let nextQuestion = questions[currentQuestionTurn];
 	console.log(nextQuestion);
 	document.getElementById("currentPlayer").textContent = `${playerTurn} turn for quiz`
 	document.getElementById("battleQuestion").textContent = nextQuestion.question.text
-	document.getElementById("option1").textContent = nextQuestion.correctAnswer
-	for (let i = 1; i <= nextQuestion.incorrectAnswers.length; i++) {
-		let option = `option${i + 1}`
-		document.getElementById(option).textContent = nextQuestion.incorrectAnswers[i - 1]
+	let answerList = []
+	answerList.push(nextQuestion.correctAnswer);
+	nextQuestion.incorrectAnswers.forEach(element => {
+		answerList.push(element);
+	})
+	let shuffledList = answerList.sort(() => Math.random() - 0.5);
+	for (let i = 1; i <= shuffledList.length; i++) {
+		let option = `option${i}`
+		document.getElementById(option).textContent = shuffledList[i - 1]
 	}
 
 	console.log(currentQuestionTurn);
+
 
 }
 
@@ -90,6 +103,11 @@ function checkPlayerInput() {
 }
 
 function checkAnswer(button) {
+	questionAnserTurn++;
+	if (questionAnserTurn > 1) {
+		alert("Please click on next button for next question");
+		return;
+	}
 	let currentQuestionAnswer = questions[currentQuestionTurn];
 	let selectedButtonText = button.textContent
 	console.log(selectedButtonText);
