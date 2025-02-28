@@ -68,7 +68,7 @@ function nextTurn() {
 		document.getElementById("battleQuestionDiv").style.visibility = "collapse";
 		document.getElementById("categoriesSelectionDiv").style.visibility = "visible";
 		document.getElementById("gameEndButton").style.visibility = "visible";
-		currentQuestionTurn = 0;
+		currentQuestionTurn = -1;
 		currentPlayerTurn = 2;
 		questions = [];
 		return;
